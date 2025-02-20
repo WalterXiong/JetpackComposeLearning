@@ -21,6 +21,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -66,6 +70,16 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun SimpleWight(modifier: Modifier = Modifier) {
+
+    var userInput by remember { mutableStateOf("") }
+    Column {
+        TextFieldWidget(
+            userInput,
+            { newValue -> userInput = newValue },
+            modifier
+        )
+    }
+
 
     // 显示一列，类似于 LinerLayout
     // modifier参数是Compose当中非常灵魂的一个组件,fillMaxSize()函数之后可以让Column的大小充满父布局
@@ -201,7 +215,7 @@ fun SimpleWight(modifier: Modifier = Modifier) {
     }*/
 
 
-    Box(
+    /*Box(
         modifier = modifier.fillMaxSize()
     ) {
 
@@ -258,8 +272,28 @@ fun SimpleWight(modifier: Modifier = Modifier) {
             strokeWidth = 6.dp,
             modifier = modifier.align(Alignment.BottomEnd)
         )
-    }
+    }*/
 }
+
+
+/**
+ * 使用 State 进项函数重组
+ */
+@Composable
+fun TextFieldWidget(value: String, onValueChange: (String) -> Unit, modifier: Modifier = Modifier) {
+    TextField(
+        value = value,
+        modifier = modifier,
+        onValueChange = onValueChange,
+        placeholder = {
+            Text(text = "这是一个占位符，类比 Hint")
+        },
+        colors = TextFieldDefaults.colors(
+            unfocusedContainerColor = Color.Gray
+        )
+    )
+}
+
 
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
