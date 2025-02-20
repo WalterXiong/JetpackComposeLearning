@@ -6,13 +6,13 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.LinearProgressIndicator
@@ -31,11 +31,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil3.compose.AsyncImage
 import com.androidlearning.composetest.ui.theme.ComposeTestTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
+
         enableEdgeToEdge()
 
         // setContent 提供一个 Composable 作用域
@@ -68,7 +71,9 @@ fun SimpleWight(modifier: Modifier = Modifier) {
     // modifier参数是Compose当中非常灵魂的一个组件,fillMaxSize()函数之后可以让Column的大小充满父布局
     // horizontalAlignment参数可以指定Column当中的子控件在水平方向上的对齐方式，CenterHorizontally表示居中对齐，另外你还可以选择Start和End
     /*Column(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState()),
         // 其中组件的水平对齐方式
         horizontalAlignment = Alignment.CenterHorizontally,
         // 其中组件的垂直对齐方式
@@ -131,11 +136,10 @@ fun SimpleWight(modifier: Modifier = Modifier) {
         )
 
         // 显示网络图片
-        *//*AsyncImage(
-            // model = "https://img-blog.csdnimg.cn/20200401094829557.jpg",
+        AsyncImage(
             model = "https://mmbiz.qpic.cn/mmbiz_png/v1LbPPWiaSt4ibXMCwHKJic7CHISyKMMnzl0CVmw5zFj8CWxrtHWz4rjEeic8nm6MaRdy0Oe3Z3egge1LbAFq2tMKw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1",
             contentDescription = "第三行代码"
-        )*//*
+        )
 
         // =========================================================================================
         // 进度条
@@ -159,7 +163,7 @@ fun SimpleWight(modifier: Modifier = Modifier) {
      * 它是用于保证在手机横竖屏旋转的情况下滚动位置不会丢失的，
      * 通常可以调用rememberScrollState函数获得
      */
-    Row(
+    /*Row(
         modifier = modifier
             .fillMaxSize()
             .horizontalScroll(rememberScrollState()),
@@ -194,7 +198,66 @@ fun SimpleWight(modifier: Modifier = Modifier) {
                 unfocusedContainerColor = Color.White
             )
         )
+    }*/
 
+
+    Box(
+        modifier = modifier.fillMaxSize()
+    ) {
+
+        Text(
+            text = "这是一个文本",
+            color = Color.Green,
+            fontSize = 26.sp,
+            modifier = modifier.align(Alignment.TopStart)
+        )
+
+        val context = LocalContext.current
+        Button(
+            modifier = modifier.align(Alignment.TopEnd),
+            onClick = {
+                Toast.makeText(context, "这是一个 Toast 通知", Toast.LENGTH_SHORT).show()
+            }
+        ) {
+            Text(
+                text = "这是一个按钮",
+                color = Color.Magenta,
+                fontSize = 26.sp
+            )
+        }
+
+        // value：参数用于指定当前输入框中显示的文字内容
+        // onValueChange：参数用于监听输入框中的文字内容变化
+        TextField(
+            value = "",
+            onValueChange = {},
+            placeholder = {
+                Text(text = "这是一个占位符，类比 Hint")
+            },
+            colors = TextFieldDefaults.colors(
+                unfocusedContainerColor = Color.White
+            ),
+            modifier = modifier.align(Alignment.CenterStart)
+        )
+
+        Image(
+            painter = painterResource(id = R.drawable.ic_launcher_background),
+            contentDescription = "一张绿色的照片",
+            modifier = modifier.align(Alignment.CenterEnd)
+        )
+
+        val bitmap: ImageBitmap = ImageBitmap.imageResource(id = R.drawable.fufu)
+        Image(
+            bitmap = bitmap,
+            contentDescription = "一张 fufu 图片",
+            modifier = modifier.align(Alignment.BottomStart)
+        )
+
+        CircularProgressIndicator(
+            color = Color.Green,
+            strokeWidth = 6.dp,
+            modifier = modifier.align(Alignment.BottomEnd)
+        )
     }
 }
 
